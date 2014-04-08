@@ -28,15 +28,14 @@ public class Producer<Result, Param> implements Runnable {
 
     @Override
     public void run() {
-        boolean finished = false;
-        while (!finished) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 Task<Result, Param> task = taskFactory.createTask();
                 Param argument = taskFactory.createArgument();
                 Utils.log(TO_LOG, "Producer " + id + ": task queued with argument=" + argument);
                 taskQueue.put(new TaskWithArgument<>(task, argument));
-            } catch (InterruptedException ignored) {
-                finished = true;
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
             }
         }
     }

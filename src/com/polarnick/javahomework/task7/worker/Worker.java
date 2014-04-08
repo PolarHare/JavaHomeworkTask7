@@ -26,16 +26,15 @@ public class Worker<R, V> implements Runnable {
 
     @Override
     public void run() {
-        boolean finished = false;
-        while (!finished) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 TaskWithArgument<R, V> task = queueOfTasks.take();
                 Utils.log(TO_LOG, "Worker " + id + ": executing task with argument=" + task.getArg());
                 R result = task.call();
                 Utils.log(TO_LOG, "Worker " + id + ": task executed with argument=" + task.getArg() + " with result=" + result);
                 queueToPublish.put(result);
-            } catch (InterruptedException e) {
-                finished = true;
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
             }
         }
     }
