@@ -23,13 +23,10 @@ public class Publisher implements Runnable {
 
     @Override
     public void run() {
-        boolean finished = false;
-        while (!finished) {
-            try {
-                Utils.log(TO_LOG, "Publisher " + id + ": result published = " + queueToPublish.take());
-            } catch (InterruptedException e) {
-                finished = true;
-            }
+        try {
+            Utils.log(TO_LOG, "Publisher " + id + ": result published = " + queueToPublish.take());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
