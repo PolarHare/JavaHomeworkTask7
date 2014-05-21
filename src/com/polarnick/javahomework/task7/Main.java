@@ -45,7 +45,7 @@ public class Main {
             workers.add(createProducer(i, queueOfTasks, taskFactory));
         }
 
-        ThreadsDistributorRepeadlyExecutor executor = new ThreadsDistributorRepeadlyExecutor(workers, COMMON_THREADS);
+        ThreadsDistributorRepeatedlyExecutor executor = new ThreadsDistributorRepeatedlyExecutor(workers, COMMON_THREADS);
         executor.start();
     }
 
